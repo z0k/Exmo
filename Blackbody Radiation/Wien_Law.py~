@@ -79,11 +79,11 @@ wien = mean(lambd * T * 10. ** -9)
 
 print "The value obtained for Wien's displacement constant: ", wien
 
-#plot(lambd, n, linestyle='None', marker='o')
-#show()
-#print sigma
+plot(lambd, n, linestyle='None', marker='o')
+show()
+print sigma
 
-suptitle("Comparison of Experimental Data with Model")
+suptitle("Plot of Intensity vs. Temperature")
 subplot(2, 1, 1)
 title("Experimental data")
 plot(T, area)
@@ -92,7 +92,7 @@ grid('on')
 subplot(2, 1, 2)
 xlabel('Temperature (Kelvin)')
 title("Analytic model")
-ylabel('j ($W \cdot m^{-2}$)')
+ylabel('j')
 grid('on')
 plot(T, SBL(T))
 
