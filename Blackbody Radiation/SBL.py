@@ -11,6 +11,8 @@ current = data[:, 2]
 current_error = ones(7) * 0.0005
 peak_angle = data[:, 3]
 
+
+area_error = array([0.1279462212, 0.329477978225, 0.0314216744000001, 0.07667896545, 0.01183131025, 0.029343326, 0.1001642062])
 #Define constants:
 #Thermal coefficient of lightbulb at room temperature.
 alpha_0 = 0.0045
@@ -23,9 +25,6 @@ ratio = sqrt( (voltage_error / voltage) ** 2 + (current_error / current) ** 2) *
 #Initial angle.
 Init = 79.7
 #Define array for fit parameter for Wien's Law.
-p = zeros(1)
-#Initialize with initial guesses.
-p[0] = 0.002
 #Array for index of refraction.
 n = zeros(7)
 #Array for angle data
@@ -41,6 +40,11 @@ angle_error = (Init - array([0.25870, 0.14490, 0.16557, 0.31044, 0.23800, 0.2690
 
 #Stefan's constant.
 sigma = 5.670400 * 10 ** -8
+
+p = zeros(2)
+#Initialize with initial guesses.
+p[0] = int(4)
+p[1] = sigma
 
 A = 13900.
 B = 1.689
@@ -62,16 +66,16 @@ def wavelength(n):
     return sqrt(A / (n - B))
 
 
-def SBL(T):
-    return sigma * T ** 4
+def SBL(T, p):
+    return p[1] * T ** p[0]
 
 
 def wien_law(T, p):
     return p[0] * 1. / T
 
 
-def residuals(p, lambd, T):
-    return lambd - wien_law(T, p)
+def residuals(p, area, T):
+    return area - SBL(T, p)
 
 
 T_error = temp_error(ratio)
@@ -90,32 +94,35 @@ for i in range(0, 7):
 
 
 p_final, cov_x, info, mesg, success = leastsq(residuals, p,
-args=(lambd, T), full_output=True)
+args=(area, T), full_output=True)
 
-errorbar(T, lambd, lambd_error, fmt='r+')
 
+suptitle("Comparison of Experimental Data with Model")
+subplot(2, 1, 1)
+title("Experimental data")
+plot(T, area)
+plot(T, SBL(T, p_final))
+errorbar(T, area, area_error, fmt='r+')
+ylabel('j ($W \cdot m^{-2}$)')
+grid('on')
+subplot(2, 1, 2)
 xlabel('Temperature (Kelvin)')
-ylabel('Wavelength (nanometers)')
-plot(T, lambd, linestyle="None", marker='o')
-plot(T, wien_law(T, p_final))
+title("Analytic model")
+ylabel('j ($W \cdot m^{-2}$)')
+grid('on')
+plot(T, sigma * T ** 4)
+
 show()
 
-wien = mean(lambd * T * 10. ** -9)
-
-print "The value obtained for Wien's displacement constant by taking the average: %e" % wien, "\n"
-
-
 #p_final is a value outputed from the leastsq function.
-y_final = wien_law(lambd, p_final)
+y_final = SBL(T, p_final)
 #Chi-square.
-chi2 = sum((lambd - y_final) ** 2 / (abs(lambd_error) ** 2))
+chi2 = sum((area - y_final) ** 2 / (abs(area_error)) ** 2)
 #Degrees of freedom.
-dof = len(lambd) - len(p_final)
+dof = len(T) - len(p_final)
 #Reduced chi-squared value is calculated.
 print "RMS of residuals (sqrt(chisquared/dof))", sqrt(chi2 / dof)
 
 
 for i in range(len(p_final)):
-    print "p[%d] =%12.3f +/- %.4f" % (i, p_final[i], sqrt(cov_x[i, i]))
-
-print "\nThe value obtained for Wien's displacement constant given by p_final: %e" % (p_final[0] * 10. ** -9)
+    print "p[%d] =%12.3e +/- %.4g" % (i, p_final[i], sqrt(cov_x[i, i]))
