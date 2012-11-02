@@ -27,7 +27,7 @@ args=(index_of_refraction, wavelength), full_output=True)
 
 #p_final is a value outputed from the leastsq function.
 y_final = peval(wavelength, p_final)
-#Chi-square.
+#Chi-square. IGNORE!! Uncertainty was not given in question.
 chi2 = sum((index_of_refraction - y_final) ** 2 / abs(0.3))
 #Degrees of freedom.
 dof = len(wavelength) - len(p_final)
@@ -39,7 +39,7 @@ for i in range(len(p_final)):
     print "p[%d] =%12.3f +/- %.4f" % (i, p_final[i], sqrt(cov_x[i, i]))
 
 
-title('Something')
+title('Prism Coefficients')
 plot(wavelength, index_of_refraction, marker='o', linestyle='None')
 xlabel('Wavelength')
 ylabel('Index of Refraction')
