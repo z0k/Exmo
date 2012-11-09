@@ -4,9 +4,9 @@ from scipy.optimize import leastsq
 
 data = loadtxt("charge_mass_ratio.txt", dtype='float', skiprows=1)
 
-voltage = data[:, 0]
-current = data[:, 1]
-diameter = data[:, 2]
+voltage = data[13:, 0]
+current = data[13:, 1]
+diameter = data[13:, 2]
 
 voltage_error = ones(len(voltage)) * 0.05
 current_error = ones(len(current)) * 0.0005
@@ -34,11 +34,6 @@ n = 130.
 R = 0.161
 #Expression for the constant k in equation 8 from document.
 k = (mu * n / R) * (1 / sqrt(2.)) * (4. / 5.) ** (3. / 2.)
-
-#Off axis correction ratio.
-Bz_ratio = zeros(len(radius))
-Bz_ratio = 1. - (radius ** 4) / ((R ** 4) * (0.6583 + 0.29 * (radius ** 2 / R ** 2)) ** 2)
-adj_radius_error = radius / Bz_ratio - radius
 
 
 #The function representing equation 8 from the document.
@@ -69,7 +64,7 @@ errorbar(current, y, y_error, fmt='r+')
 em_ratio = p_final[0] ** 2
 #Error propogation for charge mass ratio.
 em_ratio_error = 2. * p[0] * sqrt(cov_x[0, 0])
-print "The calculated value of (e/m) is%12.4e +/- %.5e." % (em_ratio, em_ratio_error)
+print "The calculated value of (e/m) is%12.4e +/_ %.5e." % (em_ratio, em_ratio_error)
 
 title("Charge Mass Ratio of an Electron")
 plot(current, y, linestyle='None', marker='o')
@@ -77,8 +72,3 @@ plot(current, eight(current, p_final))
 ylabel(r'$\frac{\sqrt{V}}{r}$', fontsize=18)
 xlabel(r'$I$', fontsize=14)
 show()
-
-#we tabulate some radius error - adjusted radius error data
-print "%7s%28s%31s" % ("Radius", "Radius Error", "Adjusted Radius Error")
-for i in range(len(radius)):
-    print "%10.3e%22.3e%22.3e" % (radius[i], radius_error[i], adj_radius_error[i])
