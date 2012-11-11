@@ -69,7 +69,7 @@ errorbar(current, y, y_error, fmt='r+')
 em_ratio = p_final[0] ** 2
 #Error propogation for charge mass ratio.
 em_ratio_error = 2. * p[0] * sqrt(cov_x[0, 0])
-print "\nThe calculated value of (e/m) is%12.4e +/- %.5e." % (em_ratio, em_ratio_error)
+print "The calculated value of (e/m) is%12.4e +/- %.5e." % (em_ratio, em_ratio_error)
 
 title("Charge Mass Ratio of an Electron")
 plot(current, y, linestyle='None', marker='o')
@@ -79,6 +79,6 @@ xlabel(r'$I$', fontsize=14)
 show()
 
 #we tabulate some radius error - adjusted radius error data
-print "\n%7s%28s%31s" % ("Radius", "Radius Error", "Adjusted Radius Error")
+print "%7s%28s%31s" % ("Radius", "Radius Error", "Adjusted Radius Error")
 for i in range(len(radius)):
     print "%10.3e%22.3e%22.3e" % (radius[i], radius_error[i], adj_radius_error[i])
