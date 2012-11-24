@@ -5,9 +5,11 @@ from scipy.optimize import leastsq
 data = loadtxt("Ex2_RC.txt", dtype='float', skiprows=1)
 
 #Frequency in Hertz converted into angular frequency.
-frequency = data[:, 0] 
+frequency = data[:, 0] * 2. * pi
 voltage_capacitor = data[:, 1]
 voltage_resistor = data[:, 2]
+#Convert the phase difference data into seconds.
+phase_diff = data[:, 3] * 10 ** -3.
 
 voltage_ratio = voltage_capacitor / voltage_resistor
 
@@ -20,18 +22,11 @@ capacitor = 0.022 * 10 ** -6
 reactance_inductor = frequency * inductor
 reactance_capacitor = 1. / (frequency * capacitor)
 
-phase_diff = data[3:-2, 3] / frequency[3:-2]
-print phase_diff
-
-
 def impedance(reactance, resistance):
     return (reactance ** 2 + resistance ** 2) ** 0.5
 
 
 plot(log(frequency), log(impedance(reactance_capacitor, resistance[5])))
-plot(log(frequency), log(voltage_ratio * resistance[5]))
-show()
-
-plot((frequency[3:-2]), (phase_diff))
+plot(frequency, voltage_ratio * resistance[5])
 show()
 

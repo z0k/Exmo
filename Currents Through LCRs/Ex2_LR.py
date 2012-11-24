@@ -22,7 +22,6 @@ reactance_inductor = 2 * pi * frequency * inductor
 reactance_capacitor = 1. / (2 * pi * frequency * capacitor)
 
 
-
 def impedance(reactance, resistance):
     return sqrt(reactance ** 2 + resistance ** 2)
 

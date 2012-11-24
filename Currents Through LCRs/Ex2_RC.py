@@ -4,24 +4,13 @@ from scipy.optimize import leastsq
 
 data = loadtxt("Ex2_RC.txt", dtype='float', skiprows=1)
 
-<<<<<<< HEAD
-#Frequency in Hertz converted into angular frequency.
-frequency = data[:, 0]  * 2 * pi
-=======
 frequency = data[:, 0] * 2. * pi
->>>>>>> 0e852ebf64571be7aeb2786ec75882776c3b9c1e
 voltage_capacitor = data[:, 1]
 vc_error = ones(len(voltage_capacitor)) * 0.005
 voltage_resistor = data[:, 2]
-<<<<<<< HEAD
-
-voltage_ratio = voltage_capacitor / voltage_resistor
-
-=======
 vr_error = ones(len(voltage_resistor)) * 0.005
 #Convert the phase difference data into seconds.
 phase_diff = data[:, 3] * 10 ** -6.
->>>>>>> 0e852ebf64571be7aeb2786ec75882776c3b9c1e
 #Resistances of resistors in ohms.
 resistance = [96700., 28740., 473500., 12750., 3114., 517.2]
 resistance_error = 0.05
@@ -41,25 +30,11 @@ capacitor = 0.022 * 10 ** -6
 reactance_inductor = log(frequency) * inductor
 reactance_capacitor = 1. / (log(frequency) * capacitor)
 
-<<<<<<< HEAD
-phase_diff = data[3:-2, 3] / frequency[3:-2]
-print phase_diff
-
-
-def impedance(reactance, resistance):
-    return (reactance ** 2 + resistance ** 2) ** 0.5
-=======
->>>>>>> 0e852ebf64571be7aeb2786ec75882776c3b9c1e
 
 def impedance(reactance, p):
     return p[1] * (reactance ** 2 + resistance[5] ** 2) ** p[0]
 
 
-<<<<<<< HEAD
-plot((frequency[3:-2]), (phase_diff))
-show()
-
-=======
 def residuals(p, Z, reactance):
     return Z - impedance(reactance, p)
 
@@ -87,4 +62,3 @@ plot(log(frequency), Z, linestyle='None', marker='.')
 xlabel(r'$f$')
 ylabel(r'$Z$')
 show()
->>>>>>> 0e852ebf64571be7aeb2786ec75882776c3b9c1e
