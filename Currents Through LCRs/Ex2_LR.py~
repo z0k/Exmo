@@ -23,7 +23,6 @@ capacitor = 0.022 * 10 ** -6
 reactance_inductor = frequency * inductor
 reactance_capacitor = 1. / (frequency * capacitor)
 
-
 def impedance(reactance, resistance):
     return (reactance ** 2 + resistance ** 2) ** 0.5
 
