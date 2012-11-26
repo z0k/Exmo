@@ -4,7 +4,7 @@ from scipy.optimize import leastsq
 
 data = loadtxt("Ex2_LCR.txt", dtype='float', skiprows=1)
 
-#m_frequency = arange(10,1000000)
+m_frequency = arange(10,1000000)
 frequency = data[:, 0] * 2. * pi
 voltage = data[:, 1]
 v_error = ones(len(voltage)) * 0.005
@@ -55,9 +55,9 @@ for i in range(len(p_final)):
 #errorbar(log(frequency), Z, Z_error, fmt='r+')
 
 title("LCR circuit")
-plot(log(frequency), impedance(log(frequency), p_final), linestyle=':',
+plot(log(m_frequency), impedance(log(m_frequency), p_final), linestyle=':',
         marker='o', label='Model')
-plot(log(frequency), Z, linestyle=':', marker='.', label='Experimental Data')
+#plot(log(frequency), Z, linestyle=':', marker='.', label='Experimental Data')
 legend()
 xlabel(r'$\ln{\omega}$')
 ylabel(r'$|Z|$')

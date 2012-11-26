@@ -32,7 +32,7 @@ reactance_capacitor = 1. / (log(frequency) * capacitor)
 
 
 def impedance(reactance, p):
-    return p[1] * (reactance ** 2 + resistance[5] ** 2) ** p[0]
+    return p[0] * (reactance ** 2 + resistance[5] ** 2) ** p[1]
 
 
 def residuals(p, Z, reactance):
@@ -44,15 +44,14 @@ args=(Z, reactance_capacitor), full_output=True)
 
 #p_final is a value outputed from the leastsq function.
 y_final = impedance(reactance_capacitor, p_final)
-#Chi-square. IGNORE!! Uncertainty was not given in question.
-chi2 = sum((Z - y_final) ** 2 / abs(0.3))
+chi2 = sum((Z - y_final) ** 2. / abs(Z_error) ** 2)
 #Degrees of freedom.
 dof = len(frequency) - len(p_final)
 #Reduced chi-squared value is calculated.
 print "RMS of residuals (sqrt(chisquared/dof))", sqrt(chi2 / dof)
 
-#for i in range(len(p_final)):
-#    print "p[%d] =%12.10f +/- %.11f" % (i, p_final[i], sqrt(cov_x[i, i]))
+for i in range(len(p_final)):
+    print "p[%d] =%12.10f +/- %.11f" % (i, p_final[i], sqrt(cov_x[i, i]))
 
 errorbar(log(frequency), Z, Z_error, fmt='r+')
 
