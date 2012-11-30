@@ -31,7 +31,7 @@ errorbar(log(frequency), Z, Z_error, fmt='r+')
 
 imp = sqrt(1. / ((frequency) * 0.022 * 10 ** -6) ** 2 + resistance[5] ** 2)
 
-title("RC circuit Impedance")
+title("RC circuit Reactance")
 plot(log(frequency), imp, linestyle='-', label='Model')
 plot(log(frequency), Z, linestyle='None', marker='.',
      label='Experimental Data')
@@ -45,9 +45,9 @@ phi = arctan(Z / resistance[5])
 
 errorbar(log(frequency), phase_diff, phase_diff_error, fmt='r+')
 title('RC Circuit Phase Angle')
-plot(log(frequency), angle, label='Expected Angle for $q_C$')
+plot(log(frequency), angle, label='Expected Angle for $q_R$')
 plot(log(frequency), phi,
-     label=r'Total phase angle: $\arctan({\frac{X_C}{R}})$')
+     label=r'Total phase angle: $\arctan({\frac{X_R}{R}})$')
 plot(log(frequency), phase_diff, linestyle='None', marker='o',
      label='Experimental Data')
 legend(loc='upper right')
