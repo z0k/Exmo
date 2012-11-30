@@ -2,7 +2,7 @@ from pylab import *
 from numpy import *
 from scipy.optimize import leastsq
 
-data = loadtxt("Ex2_LCR.txt", dtype='float', skiprows=1)
+data = loadtxt("Ex2_LCR.txt", dtype='float', skiprows=2)
 
 frequency = data[:, 0] * 2. * pi
 frequency_error = ones(len(frequency)) * 0.5
@@ -10,16 +10,16 @@ voltage = data[:, 1]
 v_error = ones(len(voltage)) * 0.2
 voltage_resistor = data[:, 2]
 vr_error = ones(len(voltage_resistor)) * 0.2
-time_delay = data[:, 3]
-phase_diff = data[:, 3] * 10 ** -6 * frequency
+#time_delay = data[:, 3]
+#phase_diff = data[:, 3] * 10 ** -6 * frequency
 
 
-phase_diff_error = phase_diff * sqrt((.20 / time_delay) ** 2 +
-                                     (5. * 2. * pi / frequency) ** 2)
+#phase_diff_error = phase_diff * sqrt((.20 / time_delay) ** 2 +
+#                                     (5. * 2. * pi / frequency) ** 2)
 
 #Limit angles between -pi and pi.
-for i in range(0, 5):
-    phase_diff[i] = phase_diff[i] - pi
+#for i in range(0, 5):
+#    phase_diff[i] = phase_diff[i] - pi
 
 #Resistances of resistors in ohms.
 resistance = [96700., 28740., 473500., 12750., 3114., 517.2]
@@ -48,12 +48,12 @@ xlabel(r'$\ln{\omega}$ (rad s$^{-1}$)')
 ylabel(r'$|Z|$ (ohms)')
 show()
 
-errorbar(log(frequency), phase_diff, phase_diff_error, fmt='r+')
-plot(log(frequency), arctan(((frequency) * inductor - 1. / ((frequency) *
-    capacitor)) / resistance[5]), label='Model')
-plot(log(frequency), phase_diff, linestyle='None', marker='o',
-     label='Experimenta Data')
-legend(loc='lower right')
-xlabel(r'$\ln{\omega}$')
-ylabel(r'$\phi$')
-show()
+#errorbar(log(frequency), phase_diff, phase_diff_error, fmt='r+')
+#plot(log(frequency), arctan(((frequency) * inductor - 1. / ((frequency) *
+#    capacitor)) / resistance[5]), label='Model')
+#plot(log(frequency), phase_diff, linestyle='None', marker='o',
+#     label='Experimenta Data')
+#legend(loc='lower right')
+#xlabel(r'$\ln{\omega}$')
+#ylabel(r'$\phi$')
+#show()
